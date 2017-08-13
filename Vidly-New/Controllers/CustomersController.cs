@@ -1,31 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
-using Vidly.Models;
-using Vidly.ViewModels;
+using System.Data.Entity;
+using Vidly_New.Models;
 
 namespace Vidly.Controllers
 {
     public class CustomersController : Controller
     {
-        private List<Customer> customers = new List<Customer>() {
-            new Customer() {Id = 0, Name = "Yoav Saroya"},
-            new Customer() {Id = 1, Name = "Amit Shmuel"}
-        };
+        private ApplicationDbContext context;
+
+        public CustomersController() {
+            context = new ApplicationDbContext();
+        }
+
+        protected override void Dispose(bool disposing) {
+            context.Dispose();
+        }
 
 
         // GET: Customers
         public ActionResult Index() {
-            return View(new RandomMovieViewModel() { Customers = customers });
+            var customers = context.Customers.Include( c => c.MembershipType).ToList();
+
+            return View(customers);
         }
 
         public ActionResult Details(int id) {
-            if(id < 0 || id >= customers.Count) {
-                return HttpNotFound();
-            }
-            return View(customers[id]);
+            var customer = context.Customers.SingleOrDefault(c => c.Id == id);
+            if(customer == null) return HttpNotFound();
+            return View(customer);
         }
     }
 }
