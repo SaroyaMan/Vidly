@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>All Customers</h2>
+
+@if(Model.Customers.Count == 0) {
+    <p>There are no customers available</p>
+}
+
+else {
+    <ul>
+        @for(int i = 0; i < Model.Customers.Count; i++) {
+            <li>@Html.ActionLink($"{Model.Customers[i].Name}", "Details", "Customers", new { id = i }, null)</li>
+        }
+    </ul>
+}

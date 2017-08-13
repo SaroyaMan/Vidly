@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Vidly_New.Controllers {
+namespace Vidly.Controllers {
     public class HomeController: Controller {
         public ActionResult Index() {
             return View();
@@ -21,5 +21,7 @@ namespace Vidly_New.Controllers {
 
             return View();
         }
+
+
     }
 }
