@@ -6,5 +6,10 @@
 
 @model Vidly.Models.Customer
 
-<h2>Details:</h2>
-<h3>@Model.Id - @Model.Name</h3>
+<h1>@Model.Name</h1>
+<ul>
+    <li>Membership Type: Model.MembershipType.Name</li>
+    @if(Model.Birthdate != null) {
+        <li>Birthdate: @String.Format("{0:dd/MM/yyyy}", @Model.Birthdate)</li>
+    }
+</ul>@*String.Format("{0:d/M/yyyy HH:mm:ss}", dt);*@
