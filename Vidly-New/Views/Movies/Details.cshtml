@@ -5,6 +5,10 @@
 }
 @model Vidly.Models.Movie
 
-<h2>Details:</h2>
-<h3>@Model.Id - @Model.Name</h3>
-
+<h1>@Model.Name</h1>
+<ul>
+    <li>Release Date: @String.Format("{0:dd/MM/yyyy}", @Model.ReleaseDate)</li>
+    <li>Date Added: @String.Format("{0:dd/MM/yyyy}", @Model.DateAdded)</li>
+    <li>Stock: @Model.NumberInStock</li>
+    <li>Stock: @Model.Genre.Name</li>
+</ul>

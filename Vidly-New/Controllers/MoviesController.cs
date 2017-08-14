@@ -5,17 +5,23 @@ using System.Web;
 using System.Web.Mvc;
 using Vidly.Models;
 using Vidly.ViewModels;
+using Vidly_New.Models;
+using System.Data.Entity;
 
 namespace Vidly.Controllers
 {
     public class MoviesController : Controller
     {
+        private ApplicationDbContext context;
 
-        private List<Movie> movies = new List<Movie>
-        {
-            new Movie() { Name = "Shrek", Id = 0 },
-            new Movie() { Name = "Wall-E", Id = 1 }
-        };
+        public MoviesController() {
+            context = new ApplicationDbContext();
+        }
+
+        protected override void Dispose(bool disposing) {
+            context.Dispose();
+        }
+
 
         // GET: Movies/Random
         public ActionResult Random()
@@ -48,16 +54,16 @@ namespace Vidly.Controllers
         }
 
         public ActionResult Details(int id) {
-            if(id < 0 || id >= movies.Count) {
-                return HttpNotFound();
-            }
-            return View(movies[id]);
+            var movie = context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Id == id);
+            if(movie == null) return HttpNotFound();
+            return View(movie);
         }
 
         // movies
         public ActionResult Index() {
 
-            return View(new RandomMovieViewModel() { Movies = movies });
+            var movies = context.Movies.Include(m => m.Genre).ToList();
+            return View(movies);
         }
 
         //Code Snippet: mvc4 + TAB + TAB = Create a quick action

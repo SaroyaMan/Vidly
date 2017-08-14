@@ -3,18 +3,30 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model Vidly.ViewModels.RandomMovieViewModel
+@model IEnumerable<Vidly.Models.Movie>
 
 <h2>All Movies</h2>
 
-@if(Model.Movies.Count == 0) {
+@if(!Model.Any()) {
     <p>There are no movies available</p>
 }
 
 else {
-    <ul>
-        @for(int i = 0; i < Model.Movies.Count; i++) {
-            <li>@Html.ActionLink($"{Model.Movies[i].Name}", "Details", "Movies", new { id = i }, null)</li>
-        }
-    </ul>
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Movie</th>
+                <th>Genre</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var movie in Model) {
+                <tr>
+                    <td>@Html.ActionLink(movie.Name, "Details", "Movies", new { id = movie.Id }, null)</td>
+                    <td>@movie.Genre.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }

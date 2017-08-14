@@ -232,9 +232,22 @@
     <Compile Include="Migrations\201708131231535_UpdateCustomerBirthdate.Designer.cs">
       <DependentUpon>201708131231535_UpdateCustomerBirthdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708140606252_CreateGenreModel.cs" />
+    <Compile Include="Migrations\201708140606252_CreateGenreModel.Designer.cs">
+      <DependentUpon>201708140606252_CreateGenreModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708140613207_CreatingMovies.cs" />
+    <Compile Include="Migrations\201708140613207_CreatingMovies.Designer.cs">
+      <DependentUpon>201708140613207_CreatingMovies.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708140623219_InsertGenres.cs" />
+    <Compile Include="Migrations\201708140623219_InsertGenres.Designer.cs">
+      <DependentUpon>201708140623219_InsertGenres.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MembershipType.cs" />
@@ -355,6 +368,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708131231535_UpdateCustomerBirthdate.resx">
       <DependentUpon>201708131231535_UpdateCustomerBirthdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708140606252_CreateGenreModel.resx">
+      <DependentUpon>201708140606252_CreateGenreModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708140613207_CreatingMovies.resx">
+      <DependentUpon>201708140613207_CreatingMovies.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708140623219_InsertGenres.resx">
+      <DependentUpon>201708140623219_InsertGenres.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
