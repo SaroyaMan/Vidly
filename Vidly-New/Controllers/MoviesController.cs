@@ -7,6 +7,8 @@ using Vidly.Models;
 using Vidly.ViewModels;
 using Vidly_New.Models;
 using System.Data.Entity;
+using Vidly_New.ViewModels;
+using AutoMapper;
 
 namespace Vidly.Controllers
 {
@@ -16,6 +18,7 @@ namespace Vidly.Controllers
 
         public MoviesController() {
             context = new ApplicationDbContext();
+            Mapper.Initialize(cfg => cfg.CreateMap<Customer, Customer>());
         }
 
         protected override void Dispose(bool disposing) {
@@ -71,6 +74,39 @@ namespace Vidly.Controllers
         [Route("movies/released/{year}/{month:regex(\\d{2}):range(1,12)}")]
         public ActionResult ByReleaseDate(int year, int month) {
             return Content($"{year}/{month}");
+        }
+
+        public ActionResult New() {
+            var genres = context.Genres.ToList();
+            var viewModel = new MovieFormViewModel() {
+                Genres = genres
+            };
+            return View("MovieForm", viewModel);
+        }
+
+        public ActionResult Edit(int id) {
+            var movie = context.Movies.SingleOrDefault(c => c.Id == id);
+            if(movie == null)
+                return HttpNotFound();
+
+            var viewModel = new MovieFormViewModel() {
+                Movie = movie,
+                Genres = context.Genres.ToList()
+            };
+            return View("MovieForm", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Save(Movie movie) {
+            if(movie.Id == 0) {
+                context.Movies.Add(movie);
+            }
+            else {
+                var customerInDb = context.Customers.Single(c => c.Id == movie.Id);
+                Mapper.Map(movie, customerInDb);
+            }
+            context.SaveChanges();  //Save and commit it in the Database (Like a Transaction)
+            return RedirectToAction("Index", "Movies");
         }
 
     }

@@ -2,6 +2,9 @@
 using System.Web.Mvc;
 using System.Data.Entity;
 using Vidly_New.Models;
+using Vidly_New.ViewModels;
+using Vidly.Models;
+using AutoMapper;
 
 namespace Vidly.Controllers
 {
@@ -11,6 +14,7 @@ namespace Vidly.Controllers
 
         public CustomersController() {
             context = new ApplicationDbContext();
+            Mapper.Initialize(cfg => cfg.CreateMap<Customer, Customer>());
         }
 
         protected override void Dispose(bool disposing) {
@@ -30,6 +34,54 @@ namespace Vidly.Controllers
 
             if(customer == null) return HttpNotFound();
             return View(customer);
+        }
+
+        public ActionResult New() {
+            var membershipTypes = context.MembershipTypes.ToList();
+            var viewModel = new CustomerFormViewModel() {
+                MembershipTypes = membershipTypes
+            };
+            return View("CustomerForm",viewModel);
+        }
+
+        public ActionResult Edit(int id) {
+            var customer = context.Customers.SingleOrDefault(c => c.Id == id);
+            if(customer == null)
+                return HttpNotFound();
+
+            var viewModel = new CustomerFormViewModel() {
+                Customer = customer,
+                MembershipTypes = context.MembershipTypes.ToList()
+            };
+            return View("CustomerForm", viewModel);
+        }
+
+        /* MVC is smart enough to make only properties Create action
+         * is get and create Customer from it
+         * So we dont need this:
+         * public ActionResult Create(CustomerFormViewModel viewModel)
+         */
+        [HttpPost]
+        public ActionResult Save(Customer customer) {
+            if(customer.Id == 0) {
+                context.Customers.Add(customer);
+            }
+            else {
+                var customerInDb = context.Customers.Single(c => c.Id == customer.Id);
+
+                //Bad app
+                //TryUpdateModel(customerInDb, "", new string[] { "Name", "Email" });   //Save changes in the customer that has that id
+
+                //customerInDb.Name = customer.Name;
+                //customerInDb.Birthdate = customer.Birthdate;
+                //customerInDb.MembershipTypeId = customer.MembershipTypeId;
+                //customerInDb.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
+
+                //Using AutoMapper is much easier and cleaner:
+                Mapper.Map(customer, customerInDb);
+            }
+            context.SaveChanges();  //Save and commit it in the Database (Like a Transaction)
+            return RedirectToAction("Index", "Customers");
         }
     }
 }
