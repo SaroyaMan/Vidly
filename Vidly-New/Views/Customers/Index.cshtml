@@ -5,7 +5,7 @@
 @model IEnumerable<Vidly.Models.Customer>
 
 <h2>All Customers</h2>
-
+@Html.ActionLink("New Customer", "New", "Customers", null, new { @class = "btn btn-primary" })
 @if(!Model.Any()) {
     <p>There are no customers available</p>
 }
@@ -29,4 +29,3 @@ else {
         </tbody>
     </table>
 }
-@Html.ActionLink("Create New Customer", "New", "Customers", null, new { @class = "btn btn-primary" })

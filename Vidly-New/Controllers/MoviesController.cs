@@ -18,7 +18,7 @@ namespace Vidly.Controllers
 
         public MoviesController() {
             context = new ApplicationDbContext();
-            Mapper.Initialize(cfg => cfg.CreateMap<Customer, Customer>());
+            Mapper.Initialize(cfg => cfg.CreateMap<Movie, Movie>());
         }
 
         protected override void Dispose(bool disposing) {
@@ -76,6 +76,7 @@ namespace Vidly.Controllers
             return Content($"{year}/{month}");
         }
 
+
         public ActionResult New() {
             var genres = context.Genres.ToList();
             var viewModel = new MovieFormViewModel() {
@@ -89,21 +90,30 @@ namespace Vidly.Controllers
             if(movie == null)
                 return HttpNotFound();
 
-            var viewModel = new MovieFormViewModel() {
-                Movie = movie,
+            var viewModel = new MovieFormViewModel(movie) {
                 Genres = context.Genres.ToList()
             };
             return View("MovieForm", viewModel);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]  //Avoid sending the form from outside the page
         public ActionResult Save(Movie movie) {
+
+            if(!ModelState.IsValid) {
+                var viewModel = new MovieFormViewModel(movie) {
+                    Genres = context.Genres.ToList()
+                };
+                return View("MovieForm", viewModel);
+            }
+
             if(movie.Id == 0) {
+                movie.DateAdded = DateTime.Now;
                 context.Movies.Add(movie);
             }
             else {
-                var customerInDb = context.Customers.Single(c => c.Id == movie.Id);
-                Mapper.Map(movie, customerInDb);
+                var movieInDb = context.Movies.Single(m => m.Id == movie.Id);
+                Mapper.Map(movie, movieInDb);
             }
             context.SaveChanges();  //Save and commit it in the Database (Like a Transaction)
             return RedirectToAction("Index", "Movies");
