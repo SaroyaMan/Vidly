@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using Vidly_New.Models;
+
+// DTO = Data Transfer Object
 
 namespace Vidly_New.Dtos {
     public class CustomerDto {

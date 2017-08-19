@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -20,6 +17,12 @@ namespace Vidly_New
             Mapper.Initialize(cfg => {
                 cfg.CreateMap<Customer, CustomerDto>();
                 cfg.CreateMap<CustomerDto, Customer>();
+                //cfg.CreateMap<Customer, CustomerDto>().ForMember(c => c.Id, opt => opt.Ignore());
+
+                cfg.CreateMap<Movie, MovieDto>();
+                cfg.CreateMap<MovieDto, Movie>();
+                //cfg.CreateMap<Movie, MovieDto>().ForMember(m => m.Id, opt => opt.Ignore());
+
             });
 
             GlobalConfiguration.Configure(WebApiConfig.Register);

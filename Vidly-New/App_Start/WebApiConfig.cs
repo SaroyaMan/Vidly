@@ -16,6 +16,7 @@ namespace Vidly_New
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             settings.Formatting = Formatting.Indented;
 
+
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
