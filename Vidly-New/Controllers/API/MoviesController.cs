@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Data.Entity;
 using Vidly.Models;
-using Vidly_New.App_Start;
 using Vidly_New.Dtos;
 using Vidly_New.Models;
 
@@ -18,12 +18,16 @@ namespace Vidly_New.Controllers.API {
             Mapper.Initialize(cfg => {
                 cfg.CreateMap<MovieDto, Movie>().ForMember(c => c.Id, opt => opt.Ignore());
                 cfg.CreateMap<Movie, MovieDto>();
+                cfg.CreateMap<Genre, GenreDto>();
             });
         }
 
         // GET api/movies
-        public IEnumerable<MovieDto> Get() {
-            return context.Movies.ToList().Select(Mapper.Map<Movie, MovieDto>);
+        public IEnumerable<MovieDto> GetMovies() {
+            return context.Movies.
+                Include(m => m.Genre).      //need: using System.Data.Entity;
+                ToList().
+                Select(Mapper.Map<Movie, MovieDto>);
         }
 
         // GET api/movies/5
