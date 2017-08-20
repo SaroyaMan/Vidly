@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
+using System.Data.Entity;
 using Vidly.Models;
+using Vidly_New.App_Start;
 using Vidly_New.Dtos;
 using Vidly_New.Models;
 
@@ -15,11 +17,20 @@ namespace Vidly_New.Controllers.API {
 
         public CustomersController() {
             context = new ApplicationDbContext();
+
+            Mapper.Initialize(cfg => {
+                cfg.CreateMap<CustomerDto, Customer>().ForMember(c => c.Id, opt => opt.Ignore());
+                cfg.CreateMap<Customer, CustomerDto>();
+                cfg.CreateMap<MembershipType, MembershipTypeDto>();
+            });
         }
 
         // GET /api/customers
         public IEnumerable<CustomerDto> GetCustomers() {
-            return context.Customers.ToList().Select(Mapper.Map<Customer, CustomerDto>);
+            return context.Customers.
+                Include(c => c.MembershipType).
+                ToList().
+                Select(Mapper.Map<Customer, CustomerDto>);
         }
 
         // GET /api/customers/1
@@ -50,12 +61,12 @@ namespace Vidly_New.Controllers.API {
 
         // PUT /api/customers/1
         [HttpPut]
-        public void UpdateCustomer(int id, CustomerDto customerDto) {
+        public IHttpActionResult UpdateCustomer(int id, CustomerDto customerDto) {
             if(!ModelState.IsValid)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                return BadRequest();
             var customerInDb = context.Customers.SingleOrDefault(c => c.Id == id);
             if(customerInDb == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                return NotFound();
             Mapper.Map(customerDto, customerInDb);
             //customerInDb.Name =                     customer.Name;
             //customerInDb.Birthdate =                customer.Birthdate;
@@ -63,6 +74,7 @@ namespace Vidly_New.Controllers.API {
             //customerInDb.MembershipTypeId =         customer.MembershipTypeId;
 
             context.SaveChanges();
+            return Ok();
         }
 
         // DELETE /api/customers/1

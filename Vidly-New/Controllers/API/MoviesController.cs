@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Vidly.Models;
+using Vidly_New.App_Start;
 using Vidly_New.Dtos;
 using Vidly_New.Models;
 
@@ -14,6 +15,10 @@ namespace Vidly_New.Controllers.API {
 
         public MoviesController() {
             context = new ApplicationDbContext();
+            Mapper.Initialize(cfg => {
+                cfg.CreateMap<MovieDto, Movie>().ForMember(c => c.Id, opt => opt.Ignore());
+                cfg.CreateMap<Movie, MovieDto>();
+            });
         }
 
         // GET api/movies
