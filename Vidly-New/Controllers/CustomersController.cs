@@ -8,6 +8,7 @@ using AutoMapper;
 
 namespace Vidly.Controllers
 {
+    //[Authorize]       //Apply authorization to this controller
     public class CustomersController : Controller
     {
         private ApplicationDbContext context;
@@ -23,6 +24,7 @@ namespace Vidly.Controllers
 
 
         // GET: Customers
+        //[Authorize]       //Apply authorization to one action
         public ActionResult Index() {
             return View();
         }
