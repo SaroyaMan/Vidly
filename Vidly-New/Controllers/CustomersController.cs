@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using System.Data.Entity;
-using Vidly_New.Models;
 using Vidly_New.ViewModels;
 using Vidly.Models;
 using AutoMapper;
+using Vidly_New.Models;
 
 namespace Vidly.Controllers
 {

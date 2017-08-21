@@ -40,6 +40,7 @@ namespace Vidly_New.Controllers.API {
         // POST api/movies
         [HttpPost]
         public IHttpActionResult CreateMovie(MovieDto movieDto) {
+            //if(AuthorizeAttribute.IsDefined())
             if(!ModelState.IsValid) return BadRequest();
             var movie = Mapper.Map<MovieDto, Movie>(movieDto);
             movie.DateAdded = DateTime.Now;
@@ -50,6 +51,7 @@ namespace Vidly_New.Controllers.API {
         }
 
         // PUT api/movies/5
+        [Authorize(Roles = RoleName.CAN_MANAGE_MOVIES)]
         [HttpPut]
         public IHttpActionResult UpdateMovie(int id, MovieDto movieDto) {
             if(!ModelState.IsValid) return BadRequest();
@@ -63,6 +65,7 @@ namespace Vidly_New.Controllers.API {
         }
 
         // DELETE api/movies/5
+        [Authorize(Roles = RoleName.CAN_MANAGE_MOVIES)]
         [HttpDelete]
         public IHttpActionResult DeleteMovie(int id) {
             var movieInDb = context.Movies.SingleOrDefault(m => m.Id == id);

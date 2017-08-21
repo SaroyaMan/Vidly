@@ -6,6 +6,10 @@ namespace Vidly_New.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
+        [StringLength(50, ErrorMessage = "Max characters limited to 50")]
+        public string Phone { get; set; }
+
+        [Required]
         [Display(Name = "Driving License")]
         public string DrivingLicense { get; set; }
 
@@ -68,6 +72,10 @@ namespace Vidly_New.Models
 
     public class RegisterViewModel
     {
+        [Required]
+        [StringLength(50, ErrorMessage = "Maximum characters is 50")]
+        public string Phone { get; set; }
+
         [Required]
         [Display(Name = "Driving License")]
         public string DrivingLicense { get; set; }

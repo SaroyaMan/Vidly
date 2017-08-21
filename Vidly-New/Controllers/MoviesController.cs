@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Vidly.Models;
 using Vidly.ViewModels;
-using Vidly_New.Models;
-using System.Data.Entity;
-using Vidly_New.ViewModels;
-using AutoMapper;
 
-namespace Vidly.Controllers
-{
+using System.Data.Entity;
+using AutoMapper;
+using Vidly_New.Models;
+using Vidly_New.ViewModels;
+
+namespace Vidly.Controllers {
     public class MoviesController : Controller
     {
         private ApplicationDbContext context;
