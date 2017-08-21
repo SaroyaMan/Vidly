@@ -32,14 +32,28 @@ namespace Vidly_New.Controllers.API {
         // POST api/rental
         [HttpPost]
         public IHttpActionResult CreateRental(RentalDto newRental) {
-            var customer = context.Customers.SingleOrDefault(c => c.Id == newRental.CustomerId);
-            if(customer == null || newRental.MovieIds.Count == 0) return NotFound();
 
-            var movies = context.Movies.Where(m => newRental.MovieIds.Contains(m.Id));
+            //if(newRental.MovieIds.Count == 0)
+            //    return BadRequest("No Movie Ids have been given.");
+
+            //var customer = context.Customers.SingleOrDefault(c => c.Id == newRental.CustomerId);
+            var customer = context.Customers.Single(c => c.Id == newRental.CustomerId);
+
+            //if(customer == null)
+            //    return BadRequest("CustomerId is not valid.");
+
+            var movies = context.Movies.Where(m => newRental.MovieIds.Contains(m.Id)).ToList();
+
+            //if(movies.Count != newRental.MovieIds.Count)
+            //    return BadRequest("One or more MovieIds are invalid.");
 
             foreach(var movie in movies) {
+                if(movie.Available == 0) {
+                    return BadRequest("Movie is not available.");
+                }
+
                 Rental rental = new Rental(customer, movie);
-                //rental.Id = movie.Id;
+
                 context.Rentals.Add(rental);
             
             }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using Vidly.Models;
 
 namespace Vidly_New.Models {
@@ -11,6 +8,7 @@ namespace Vidly_New.Models {
         public Rental(Customer customer, Movie movie) {
             Customer = customer;
             Movie = movie;
+            --Movie.Available;
             DateRented = DateTime.Now;
         }
 
