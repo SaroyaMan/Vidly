@@ -26,11 +26,14 @@ namespace Vidly_New.Controllers.API {
         }
 
         // GET /api/customers
-        public IEnumerable<CustomerDto> GetCustomers() {
-            return context.Customers.
-                Include(c => c.MembershipType).
-                ToList().
-                Select(Mapper.Map<Customer, CustomerDto>);
+        public IHttpActionResult GetCustomers(string query = null) {
+            var customersQuery = context.Customers.Include(c => c.MembershipType);
+            if(!String.IsNullOrWhiteSpace(query)) {
+                customersQuery = customersQuery.Where(c => c.Name.Contains(query));
+            }
+            var customersDto = customersQuery.ToList().Select(Mapper.Map<Customer, CustomerDto>);
+
+            return Ok(customersDto);
         }
 
         // GET /api/customers/1
